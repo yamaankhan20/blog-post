@@ -1,0 +1,59 @@
+{% extends 'header-footer.html'%}
+
+{% block body %}
+        <!-- Page Header-->
+        <header class="masthead" style="background-image: url('{{url_for('static', filename='img/home-bg.jpg')}}')">
+            <div class="container position-relative px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <div class="site-heading">
+                            <h1>dashboard</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- Main Content-->
+        <div class="container px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-12 col-lg-12 col-xl-12">
+                    {% if get_flashed_messages() %}
+                            {% for message in get_flashed_messages() %}
+                               <div class="alert alert-success" role="alert">
+                                  {{ message }}
+                               </div>
+                            {% endfor %}
+                      {% endif %}
+                    <table class="table table-hover table-responsive">
+                      <thead>
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">Name</th>
+                          <th scope="col">post content</th>
+                          <th scope="col">Date</th>
+                          <th scope="col">slug</th>
+                          <th scope="col">img file</th>
+                          <th scope="col">auther ID</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      {% for post in get_post %}
+                            <tr>
+                              <th scope="row">{{post.id}}</th>
+                              <td>{{post.post_name}}</td>
+                              <td>{{post.post_content[0:50]}}</td>
+                              <td>{{formatted_date}}</td>
+                              <td><a href="/post/{{post.slug}}">{{post.slug}}</a></td>
+                              {% set image_link = url_for('static', filename='img/'+post.img_file) -%}
+                              <td><img src="{{image_link}}"/></td>
+                              <td>{{ post.user_posted }}</td>
+                              <td><a href="javascript:void(0);"><i class="fa-solid fa-trash"></i></a></td>
+                            </tr>
+                      {% endfor %}
+                      </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+{% endblock%}
