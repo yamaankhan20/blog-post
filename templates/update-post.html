@@ -1,0 +1,87 @@
+{% extends 'header-footer.html'%}
+
+{% block body %}
+<link href="{{ url_for('static', filename='assets/css/main.css')}}" rel="stylesheet" type="text/css" />
+<!-- Page Header-->
+        <header class="masthead" style="background-image: url('{{url_for('static', filename='img/home-bg.jpg')}}')">
+            <div class="container position-relative px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <div class="site-heading">
+                            <h1>Update Post</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+<section class="content-main">
+    <form method="POST" action="/user/update-post/{{post.user_posted}}/{{post.id}}" enctype="multipart/form-data">
+<!--        <a href="/user/update-post/{{post.id}}">click</a>-->
+        {{form_blogs.hidden_tag()}}
+            <div class="row">
+                <div class="col-12">
+                    {% if get_flashed_messages() %}
+                        {% for message in get_flashed_messages(with_categories=true) %}
+                            <div class="alert alert-{{ message[0] }}" role="alert">
+                                {{ message[1] }}
+                            </div>
+                        {% endfor %}
+                      {% endif %}
+                    <div class="content-header">
+                        <h2 class="content-title">Update Post</h2>
+                        <div>
+                            <button class="btn btn-light rounded font-sm mr-5 text-body hover-up" disabled>Save to draft</button>
+                            {% if not_found_url %}
+                                <a href="{{ url_for('user_bp.dashboard') }}">Cant Find Any Thing</a>
+                            {% else %}
+                                {{form_blogs.submit()}}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card mb-4">
+                        <div class="card-body">
+
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <h6>1. General info</h6>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="mb-4">
+                                            <label class="form-label">Blog title</label>
+                                            {{form_blogs.Blog_title(value = post.post_name)}}
+                                            {% for error in form_blogs.Blog_title.errors %}
+                                                <span style="color: red;">{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+                                        <div class="mb-4">
+                                            <label class="form-label">Description</label>
+                                            <textarea class="form-control" id="Description" name="Description" placeholder="Type here" required="">{{post.post_content }}</textarea>
+                                            {% for error in form_blogs.Description.errors %}
+                                                <span style="color: red;">{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+                                    </div> <!-- col.// -->
+                                </div> <!-- row.// -->
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <h6>4. Media</h6>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="mb-4">
+                                            <label class="form-label">Images</label>
+                                            {{form_blogs.file_field}}
+                                        </div>
+                                    </div> <!-- col.// -->
+                                </div> <!-- .row end// -->
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        </section> <!-- content-main end// -->
+{% endblock%}
